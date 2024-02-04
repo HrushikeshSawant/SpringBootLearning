@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hrushikesh.SpringBootLearning.Entity.Student;
-import com.hrushikesh.SpringBootLearning.Service.StudentService;
+import com.hrushikesh.SpringBootLearning.ServiceImpl.StudentServiceImpl;
 
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
 
 	@Autowired
-	StudentService studentService;
+	StudentServiceImpl studentServiceImpl;
 	
 	private final Logger logger = LoggerFactory.getLogger(StudentController.class);
 	
@@ -32,7 +32,7 @@ public class StudentController {
 	public Student addStudent(@RequestBody Student student)
 	{
 		logger.info("Student Object {}", student.toString());
-		return studentService.addStudent(student);
+		return studentServiceImpl.addStudent(student);
 	}
 	
 	@RequestMapping(path="add-student-xml", consumes = "application/xml")
@@ -40,43 +40,43 @@ public class StudentController {
 	public Student addStudentXml(@RequestBody Student student)
 	{
 		logger.info("Student Object {}", student.toString());
-		return studentService.addStudent(student);
+		return studentServiceImpl.addStudent(student);
 	}
 	
 	@RequestMapping("add-students")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public List<Student> addStudents(@RequestBody List<Student> students)
 	{
-		return studentService.addStudents(students);
+		return studentServiceImpl.addStudents(students);
 	}
 	
 	@GetMapping("get-student/{studentId}")
 	public ResponseEntity<Student> getStudent(@PathVariable("studentId") int studentId){
 		
-		return new ResponseEntity<Student>(studentService.getStudent(studentId), HttpStatus.OK);
+		return new ResponseEntity<Student>(studentServiceImpl.getStudent(studentId), HttpStatus.OK);
 	}
 	
 	@GetMapping(path="get-students", produces = "application/json")
 	public ResponseEntity<List<Student>> getAllStudent(){
 		
-		return new ResponseEntity<List<Student>>(studentService.getAllStudent(), HttpStatus.OK);
+		return new ResponseEntity<List<Student>>(studentServiceImpl.getAllStudent(), HttpStatus.OK);
 	}
 	
 	@GetMapping("get-student-by-name/{studentName}")
 	public ResponseEntity<List<Student>> getStudentByName(@PathVariable("studentName") String studentName){
 		
-		return new ResponseEntity<List<Student>>(studentService.getStudentByName(studentName), HttpStatus.OK);
+		return new ResponseEntity<List<Student>>(studentServiceImpl.getStudentByName(studentName), HttpStatus.OK);
 	}
 	
 	@GetMapping("get-student-by-name-surname")
 	public ResponseEntity<List<Student>> getStudentByNameSurname(@RequestParam("studentName") String studentName, @RequestParam("studentSurname") String studentSurname){
 		
-		return new ResponseEntity<List<Student>>(studentService.getStudentByNameSurname(studentName, studentSurname), HttpStatus.OK);
+		return new ResponseEntity<List<Student>>(studentServiceImpl.getStudentByNameSurname(studentName, studentSurname), HttpStatus.OK);
 	}
 	
 	@GetMapping("get-student-by-surname/{studentSurname}")
 	public ResponseEntity<List<Student>> findStudentBySurname(@PathVariable("studentSurname") String studentSurname){
 		
-		return new ResponseEntity<List<Student>>(studentService.findStudentBySurname(studentSurname), HttpStatus.OK);
+		return new ResponseEntity<List<Student>>(studentServiceImpl.findStudentBySurname(studentSurname), HttpStatus.OK);
 	}
 }
