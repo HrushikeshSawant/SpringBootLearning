@@ -2,7 +2,8 @@ package com.hrushikesh
 .SpringBootLearning.ServiceImpl;
 
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -36,6 +37,7 @@ public class FileUploadServiceImpl implements FileUploadService{
 				log.info("Uploaded file is empty/null.");
 				return new LocalFileUploadResponse("", "File not uploaded!! Empty file.");
 			}
+			
 			
 			String fileContentType = multipartFile.getContentType();
 			
@@ -76,11 +78,34 @@ public class FileUploadServiceImpl implements FileUploadService{
 			
 			log.info("File uploaded successfully to directory.");
 		} 
-		catch (IOException e) {
+		catch (IOException e) 
+		{
 			e.printStackTrace();
 		}
 		
 		return new LocalFileUploadResponse(multipartFile.getOriginalFilename(), "File uploaded successfully");
+	}
+
+	@Override
+	public InputStream serveImage(String fileName) {
+
+		try 
+		{
+			if(fileName.trim().isEmpty())
+			{
+				log.info("Empty file name passed!!");
+				throw new Exception("Empty file name passed!!");
+			}
+			
+			String filePath = folderLocation + File.separator + fileName;
+			return new FileInputStream(filePath);
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 }
