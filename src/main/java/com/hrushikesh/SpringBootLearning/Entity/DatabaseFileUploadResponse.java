@@ -1,16 +1,17 @@
 package com.hrushikesh.SpringBootLearning.Entity;
 
-public class LocalFileUploadResponse {
+public class DatabaseFileUploadResponse {
 
 	String fileName;
 	String response;
 	String url;
 
-	public LocalFileUploadResponse() {
+	public DatabaseFileUploadResponse() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public LocalFileUploadResponse(String fileName, String response, String url) {
+	public DatabaseFileUploadResponse(String fileName, String response, String url) {
 		super();
 		this.fileName = fileName;
 		this.response = response;

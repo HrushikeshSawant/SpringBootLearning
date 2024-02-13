@@ -34,7 +34,7 @@ public class FileUploadController {
 	public ResponseEntity<?> localFileUpload(@RequestParam("file") MultipartFile file)
 	{
 		log.info("Calling fileUploadServiceImpl to save PNG or JPG file");
-		return new ResponseEntity<>(fileUploadServiceImpl.localFileUpload(file), HttpStatus.OK);
+		return fileUploadServiceImpl.localFileUpload(file);
 	}
 	
 	@GetMapping("/image/{fileName}")
@@ -54,7 +54,18 @@ public class FileUploadController {
 		{
 			e.printStackTrace();
 		}
-		
+	}
+	
+	@GetMapping("/image-serve-url/{fileName}")
+	public ResponseEntity<?> serveImage1(@PathVariable String fileName, HttpServletResponse response)
+	{
+		return fileUploadServiceImpl.serveImage1(fileName);
+	}
+	
+	@PostMapping("/database-upload")
+	public ResponseEntity<?> databaseFileUpload( @RequestParam("file") MultipartFile file)
+	{
+		return fileUploadServiceImpl.databaseFileUpload(file);
 	}
 
 }
