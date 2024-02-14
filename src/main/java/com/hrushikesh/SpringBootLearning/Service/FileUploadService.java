@@ -17,4 +17,6 @@ public interface FileUploadService {
 	
 	ResponseEntity<?> databaseFileUpload(MultipartFile file);
 	
+	ResponseEntity<?> databaseFileServe(String fileName);
+	
 }

@@ -219,14 +219,15 @@ public class FileUploadServiceImpl implements FileUploadService{
 			
 			if(checker)
 			{
-				new DatabaseFiles(0, originalFileName, newName, filePath, fileType);
+				databaseFilesRepo.save(new DatabaseFiles(0, originalFileName, newName, filePath, fileType));
 				log.info("File uploaded successsfully in database");
-				return new ResponseEntity<>(new DatabaseFileUploadResponse(originalFileName, "File uploaded successsfully in database", "In dev"), HttpStatus.CREATED);
+				String serveUrl = ServletUriComponentsBuilder.fromCurrentContextPath().path("/image/").path(newName).toUriString();
+				return new ResponseEntity<>(new DatabaseFileUploadResponse(originalFileName, "File uploaded successsfully in database", serveUrl), HttpStatus.CREATED);
 			}
 			else
 			{
 				log.info("File not uploaded in database.");
-				return new ResponseEntity<>(new DatabaseFileUploadResponse(originalFileName, "File not uploaded in database.", "In dev"), HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<>(new DatabaseFileUploadResponse(originalFileName, "File not uploaded in database.", ""), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			
 			
@@ -268,5 +269,14 @@ public class FileUploadServiceImpl implements FileUploadService{
 		}
 		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+
+	@Override
+	public ResponseEntity<?> databaseFileServe(String fileName) {
+
+		
+		
+		return null;
+	}
+
 
 }

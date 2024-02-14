@@ -67,5 +67,11 @@ public class FileUploadController {
 	{
 		return fileUploadServiceImpl.databaseFileUpload(file);
 	}
+	
+	@GetMapping("/database-image-serve/{fileName}")
+	public ResponseEntity<?> databaseFileServe(@PathVariable String fileName)
+	{
+		return fileUploadServiceImpl.databaseFileServe(fileName);
+	}
 
 }
