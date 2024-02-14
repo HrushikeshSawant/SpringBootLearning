@@ -15,6 +15,6 @@ public interface FileUploadService {
 	
 	ResponseEntity<?> serveImage1(String fileName);
 	
-	ResponseEntity<DatabaseFileUploadResponse> databaseFileUpload(MultipartFile file);
+	ResponseEntity<?> databaseFileUpload(MultipartFile file);
 	
 }
