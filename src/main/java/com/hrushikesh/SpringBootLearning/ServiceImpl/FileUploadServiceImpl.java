@@ -2,16 +2,8 @@ package com.hrushikesh.SpringBootLearning.ServiceImpl;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.nio.file.CopyOption;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -20,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,10 +24,6 @@ import com.hrushikesh.SpringBootLearning.Exception.ResourseNotFoundException;
 import com.hrushikesh.SpringBootLearning.Helper.UploadFileHelper;
 import com.hrushikesh.SpringBootLearning.Repository.DatabaseFilesRepo;
 import com.hrushikesh.SpringBootLearning.Service.FileUploadService;
-
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 public class FileUploadServiceImpl implements FileUploadService{
@@ -79,7 +66,8 @@ public class FileUploadServiceImpl implements FileUploadService{
 //			The output of this snippet will let you know what is the absolute path that ClassPathResource is referring to.
 //			Now create your folders which will store the uploaded data, for-example: static/image/ to store images etc. under the output path of the above snippet.
 			
-			String upload_location = new ClassPathResource("static/image/").getFile().getAbsolutePath();
+			String upload_location = new ClassPathResource(folderLocation).getFile().getAbsolutePath();
+//			upload_location = ..\target\classes\static\image
 			
 			uniqueName = UUID.randomUUID().toString();
 			origialFileName = multipartFile.getOriginalFilename();
@@ -158,7 +146,7 @@ public class FileUploadServiceImpl implements FileUploadService{
 			
 		try 
 		{
-			filePath = folderLocation + File.separator + fileName;
+			filePath = new ClassPathResource(folderLocation).getFile().getAbsolutePath()  + File.separator + fileName;
 			if(!new File(filePath).exists())
 				throw new ResourseNotFoundException("File", "name", fileName);		
 			
@@ -173,13 +161,13 @@ public class FileUploadServiceImpl implements FileUploadService{
 	}
 	
 	@Override
-	public ResponseEntity<?> serveImage1(String fileName) {
+	public ResponseEntity<?> serveImageUrl(String fileName) {
 
 		String uriString = "";
 		
 		try 
 		{
-			File file = new File(new ClassPathResource("static/image/").getFile().getAbsolutePath()  + File.separator + fileName);
+			File file = new File(new ClassPathResource(folderLocation).getFile().getAbsolutePath()  + File.separator + fileName);
 			if(file.exists())
 			{
 				log.info("Exists");
@@ -207,21 +195,32 @@ public class FileUploadServiceImpl implements FileUploadService{
 		String newName = "";
 		String filePath = "";
 		String fileType = "";
+		String folderPathFromTarget = "static/image";
+		String folderName = "image";
 		
 		try
 		{
+			if(file.isEmpty())
+			{
+				log.info("Uploaded file is empty/null.");
+				return new ResponseEntity<>(new LocalFileUploadResponse("", "File not uploaded!! Empty file.", ""), HttpStatus.BAD_REQUEST);
+			}	
+
 			originalFileName = file.getOriginalFilename();
 			fileType = file.getContentType();
 			newName = UUID.randomUUID() + originalFileName.substring(originalFileName.lastIndexOf("."));
-			filePath = new ClassPathResource("static/image").getFile().getAbsolutePath() + File.separator + newName;
+			filePath = new ClassPathResource(folderPathFromTarget).getFile().getAbsolutePath() + File.separator + newName;
 			
 			boolean checker = UploadFileHelper.uploadFile(file, filePath);
 			
 			if(checker)
 			{
+				filePath = File.separator + folderName + File.separator + newName;
 				databaseFilesRepo.save(new DatabaseFiles(0, originalFileName, newName, filePath, fileType));
 				log.info("File uploaded successsfully in database");
-				String serveUrl = ServletUriComponentsBuilder.fromCurrentContextPath().path("/image/").path(newName).toUriString();
+				filePath = filePath.replace(File.separator, "/");
+				log.info(filePath);
+				String serveUrl = ServletUriComponentsBuilder.fromCurrentContextPath().path(filePath).toUriString();
 				return new ResponseEntity<>(new DatabaseFileUploadResponse(originalFileName, "File uploaded successsfully in database", serveUrl), HttpStatus.CREATED);
 			}
 			else
@@ -272,11 +271,42 @@ public class FileUploadServiceImpl implements FileUploadService{
 
 	@Override
 	public ResponseEntity<?> databaseFileServe(String fileName) {
+		
+		boolean byOriginalName = false;
+		boolean byNewName = false;
+		String filePath = "";
+		
+		Optional<DatabaseFiles> findByoriginalFileName = databaseFilesRepo.findByoriginalFileName(fileName);
+		if(!findByoriginalFileName.isEmpty())
+		{
+			filePath = findByoriginalFileName.get().getFilePath();
+			byOriginalName = true;
+			log.info("File found by original name");
+		}
+		
+		if(!byOriginalName)
+		{
+			Optional<DatabaseFiles> findByNewName = databaseFilesRepo.findByNewName(fileName);
+			if(!findByNewName.isEmpty())
+			{
+				filePath = findByNewName.get().getFilePath();
+				byNewName = true;
+				log.info("File found by new name");
+			}
+		}
 
+		log.info(byOriginalName + "\t" + byNewName);
+		log.info(Boolean.toString(byOriginalName && byNewName));
 		
-		
-		return null;
+		if(byOriginalName || byNewName)
+		{
+			filePath = filePath.replace(File.separator, "/");
+			log.info(filePath);
+			String serveUrl = ServletUriComponentsBuilder.fromCurrentContextPath().path(filePath).toUriString();
+			log.info(serveUrl);
+			return new ResponseEntity<>(new DatabaseFileUploadResponse(fileName, "File found on server.", serveUrl), HttpStatus.OK);
+		}
+		else
+			return new ResponseEntity<>(new DatabaseFileUploadResponse(fileName, "File not found on server.", ""), HttpStatus.NOT_FOUND);
 	}
-
-
 }

@@ -30,14 +30,14 @@ public class FileUploadController {
 	@Autowired
 	FileUploadServiceImpl fileUploadServiceImpl;
 	
-	@PostMapping("/local-upload")
+	@PostMapping("/local")
 	public ResponseEntity<?> localFileUpload(@RequestParam("file") MultipartFile file)
 	{
 		log.info("Calling fileUploadServiceImpl to save PNG or JPG file");
 		return fileUploadServiceImpl.localFileUpload(file);
 	}
 	
-	@GetMapping("/image/{fileName}")
+	@GetMapping("/local-image-serve/{fileName}")
 	public void serveImage(@PathVariable String fileName, HttpServletResponse response)
 	{
 		try
@@ -56,19 +56,19 @@ public class FileUploadController {
 		}
 	}
 	
-	@GetMapping("/image-serve-url/{fileName}")
-	public ResponseEntity<?> serveImage1(@PathVariable String fileName, HttpServletResponse response)
+	@GetMapping("/local-image-serve-url/{fileName}")
+	public ResponseEntity<?> serveImageUrl(@PathVariable String fileName, HttpServletResponse response)
 	{
-		return fileUploadServiceImpl.serveImage1(fileName);
+		return fileUploadServiceImpl.serveImageUrl(fileName);
 	}
 	
-	@PostMapping("/database-upload")
+	@PostMapping("/database")
 	public ResponseEntity<?> databaseFileUpload( @RequestParam("file") MultipartFile file)
 	{
 		return fileUploadServiceImpl.databaseFileUpload(file);
 	}
 	
-	@GetMapping("/database-image-serve/{fileName}")
+	@GetMapping("/database-image-serve-url/{fileName}")
 	public ResponseEntity<?> databaseFileServe(@PathVariable String fileName)
 	{
 		return fileUploadServiceImpl.databaseFileServe(fileName);
