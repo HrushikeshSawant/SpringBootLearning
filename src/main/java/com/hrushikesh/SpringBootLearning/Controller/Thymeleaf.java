@@ -1,5 +1,7 @@
 package com.hrushikesh.SpringBootLearning.Controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -21,4 +23,13 @@ public class Thymeleaf {
 		return "test";
 	}
 
+	@GetMapping("/thymeleaf-iteration")
+	public String iteration(Model m)
+	{
+		log.info("Inside iteration method");
+		
+		List<String> lst = List.of("ABC", "DEF", "GHI", "JKL", "123", "456");
+		m.addAttribute("list", lst);
+		return "iteration";
+	}
 }

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+</head>
+<body>
+
+	<u><i>Iteration is thymeleaf</i></u>
+	<span><br />Traversing elements of collections</span>
+	<!-- 
+		Can traverse different tpes of types:
+		Object implementing iterable
+		Object implementing map
+		Array, Single value as a list
+	 -->
+	<h1 th:text="${list}"></h1>
+	
+	<ul>
+		<li th:each="n : ${list}">
+			<span th:text="${n}"></span>
+		</li>
+	</ul>
+	
+	<!-- 
+		each also provides status such as
+		index: Current iteration index, starting with 0
+		count: The number of elements processed so far
+		size: Total number elements in the list
+		even/odd: Checks if the current iteration index is even or odd
+		first: Check if the current iteration is first one
+		last: Check if the current iteration is last one
+	-->
+	
+	<ul>
+		<li th:each="n, status : ${list}">
+			<span th:style="${status.odd} ? 'font-weight: bold; font-style: italic' : 'color: red'" th:text="${status.index} + ' ' + ${n}"></span>
+		</li>
+	</ul>
+	
+</body>
+</html>
