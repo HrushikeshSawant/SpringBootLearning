@@ -52,5 +52,12 @@ public class Thymeleaf {
 		return "templates-fragments";
 	}
 	
+	@GetMapping("/thymeleaf-about")
+	public String about(Model m)
+	{
+		log.info("Inside about method");
+		return "about";
+	}
+	
 	
 }
