@@ -205,11 +205,17 @@ public class FileUploadServiceImpl implements FileUploadService{
 				log.info("Uploaded file is empty/null.");
 				return new ResponseEntity<>(new LocalFileUploadResponse("", "File not uploaded!! Empty file.", ""), HttpStatus.BAD_REQUEST);
 			}	
-
+			
 			originalFileName = file.getOriginalFilename();
 			fileType = file.getContentType();
 			newName = UUID.randomUUID() + originalFileName.substring(originalFileName.lastIndexOf("."));
 			filePath = new ClassPathResource(folderPathFromTarget).getFile().getAbsolutePath() + File.separator + newName;
+						
+			if(!(fileType.equalsIgnoreCase("image/png") || fileType.equalsIgnoreCase("image/jpeg")))
+			{
+				log.info("Uploaded file is " + fileType + " type");
+				return new ResponseEntity<>(new LocalFileUploadResponse(originalFileName, "Only PNG and JPG files are allowed!!", ""), HttpStatus.BAD_REQUEST);
+			}
 			
 			boolean checker = UploadFileHelper.uploadFile(file, filePath);
 			

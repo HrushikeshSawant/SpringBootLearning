@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+</head>
+<body>
+	
+	<u><i>Getting value from controller and printing it using thymeleaf</i></u>
+	<h2>My name is <span th:text="${name}"></span></h2>
+	<h2>Im from <span th:text="${city}"></span></h2>
+	
+	<u><i><br />Predefined object</i></u>
+	<h2>Name is capital <span th:text="${#strings.toUpperCase(name)}"></span></h2>
+	<h2>Length of name <span th:text="${#strings.length(name)}"></span></h2>
+	
+	<u><i><br />Creating local variable which will be used in the particular context. Only in that block</i></u>
+	<div th:with="a=5, b=4, name1=Hello, gName=${name}">
+		<h1>Value of a is <span th:text="${a}"></span></h1>
+		<h1><span th:text="'Value in name variable is ' + ${name1}"></span></h1>
+		<h1><span th:text="'Value in global name variable is ' + ${gName}"></span></h1>
+		<h1><span th:text="'Sum of ' + ${a} + ' and ' + ${b} + ' is ' + ${a+b}"></span></h1>
+	</div>
+	
+	<u><i><br />Accessing local variable outside scope. NULL value is getting printed</i></u>
+	<h1>Value of a outside div is <span th:text="${a}"></span></h1>
+	
+</body>
+</html>
