@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+</head>
+<body>
+	
+	<!-- 
+		Conditional in thymeleaf
+		Elvis Operator:
+			condition ? "true" : "false";
+		
+		If-Unless:
+			th:if="${gender} == 'M'"
+			th:unless="${gender} == 'M'"
+			
+		Swith-Case:
+			<h3 th:switch="${#lists.size(list)}">
+				<span th:case="0">List is empty</span>
+				<span th:case="1">List contains 1 element</span>
+				<span th:case="*">List contains more than 1 element</span> //Default text if all conditions are false then this will get printed
+			</h3>
+			
+	 -->
+	 
+	<h1>Conditional Statement in Thymeleaf</h1>
+	<u><i>Elvis Opearator</i></u>
+	<span><br />Making use of Elvis operator to print boolean is true or false by changing style</span>
+	<h3>Boolean is <span th:style="${boolean} ? 'color: green' : 'color:red'" th:text="${boolean} ? 'TRUE' : 'FALSE'"></span></h3>
+	 
+	<u><i><br />If-Unless Opearator</i></u>
+	<span><br />Making use of If-Unless operator to print gender</span>
+	<h3><span th:if="${gender} == 'M'">Male</span></h3>
+	<h3><span th:unless="${gender} == 'M'">Female</span></h3>
+	
+	<u><i><br />Switch-Case Opearator</i></u>
+	<span><br />Making use of Switch-Case operator to print size of list</span>
+	<h3 th:switch="${#lists.size(list)}">
+		<span th:case="0">List is empty</span>
+		<span th:case="1">List contains 1 element</span>
+		<span th:case="*">List contains more than 1 element</span>
+	</h3>
+	
+	
+</body>
+</html>

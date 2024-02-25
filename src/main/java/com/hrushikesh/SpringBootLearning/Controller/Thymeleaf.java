@@ -32,4 +32,23 @@ public class Thymeleaf {
 		m.addAttribute("list", lst);
 		return "iteration";
 	}
+	
+	@GetMapping("/thymeleaf-conditional-statement")
+	public String conditionalStatement(Model m)
+	{
+		log.info("Inside conditional-statement method");
+		m.addAttribute("boolean", true);
+		m.addAttribute("gender", "M");
+		m.addAttribute("list", List.of(10, 20, 30, 40, 50));
+		return "conditional-statement";
+	}
+	
+	@GetMapping("/thymeleaf-templates-fragments")
+	public String templatesFragments(Model m)
+	{
+		log.info("Inside thymeleaf-templates-fragments method");
+		return "templates-fragments";
+	}
+	
+	
 }

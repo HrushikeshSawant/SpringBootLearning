@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+</head>
+<body>
+	
+	<!-- 
+		Fragments are used to reuse repeated code
+		It is a part of thymeleaf tag that can be used multiple places.
+		
+		Three types to include framents:
+		1. th:replace : replaces the current tag with the tag defining the fragment.
+						It will substitute the host tag by the fragment tag. 
+						That means, it will remove host tag and in place of host tag, it will add the specified fragment including the fragment tag.
+		
+		2. th:insert : inserts content inside the tag.
+					   It will simply insert the specified fragment as the body of its host tag including the fragment tag.
+					   
+		3. th:include :  this is deprecated but it may still appear in a legacy code.
+						 It will also inserts the specified fragment as the body of its host tag but excluding the fragment tag.
+		
+		Host Tag: Wherever we are including/inserting/replacing footer is Host Tag.
+		Fragment Tag: Wherever fragment is create is Fragment Tag. 
+		
+	 -->
+	 
+	 <h3>It is an example of fragment tag</h3>
+	 <!-- Including footer -->
+	<!-- 
+		<footer id="host-tag" th:include="footer::footer">
+	
+		</footer>	
+	 -->
+	 
+	<!-- Inserting footer --> 
+	<!-- 
+		<footer id="host-tag" th:insert="footer::footer">
+		
+		</footer>	
+	 -->
+	<!-- Replace footer -->
+	<footer id="host-tag" th:replace="footer::footer">
+		
+	</footer>	
+	
+</body>
+</html>
