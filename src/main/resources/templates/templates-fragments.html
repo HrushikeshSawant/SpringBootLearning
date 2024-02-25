@@ -29,19 +29,19 @@
 	 <h3>It is an example of fragment tag</h3>
 	 <!-- Including footer -->
 	<!-- 
-		<footer id="host-tag" th:include="footer::footer">
+		<footer id="host-tag" th:include="footer::footer-name">
 	
 		</footer>	
 	 -->
 	 
 	<!-- Inserting footer --> 
 	<!-- 
-		<footer id="host-tag" th:insert="footer::footer">
+		<footer id="host-tag" th:insert="footer::footer-name">
 		
 		</footer>	
 	 -->
 	<!-- Replace footer -->
-	<footer id="host-tag" th:replace="footer::footer">
+	<footer id="host-tag" th:replace="footer::footer-name(${title}, ${subtitle})">
 		
 	</footer>	
 	

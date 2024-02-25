@@ -47,6 +47,8 @@ public class Thymeleaf {
 	public String templatesFragments(Model m)
 	{
 		log.info("Inside thymeleaf-templates-fragments method");
+		m.addAttribute("title", "Title coming from controller.");
+		m.addAttribute("subtitle", "Sub-Title coming from controller.");
 		return "templates-fragments";
 	}
 	

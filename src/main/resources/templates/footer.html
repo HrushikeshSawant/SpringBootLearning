@@ -6,9 +6,11 @@
 </head>
 <body>
 
-	<footer id="fragment-tag" th:fragment="footer">
+	<footer id="fragment-tag" th:fragment="footer-name(title, subtitle)">
 		<div>
 		<b><u><i>It is an footer <br /></i></u></b>
+			<span th:text="${title}"></span><br />
+			<span th:text="${subtitle}"></span><br />
 			<span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque accusantium quas earum autem unde vel deserunt sint fugit illum placeat. Enim fugiat quas odio nostrum rem iste nam dignissimos quam?</span>
 		</div>
 	</footer>
