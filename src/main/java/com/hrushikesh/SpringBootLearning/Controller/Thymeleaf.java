@@ -59,5 +59,12 @@ public class Thymeleaf {
 		return "about";
 	}
 	
+	@GetMapping("/thymeleaf-contact")
+	public String contact(Model m)
+	{
+		log.info("Inside contact method");
+		return "contact";
+	}
+	
 	
 }
